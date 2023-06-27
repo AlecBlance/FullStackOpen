@@ -16,8 +16,8 @@ const App = () => {
   const clickNeutral = () => setNeutral(neutral + 1)
   const clickBad = () => setBad(bad + 1)
   const allCount = () => bad + good + neutral;
-  const averageCount = () => (good - bad) / allCount()
-  const positivePercent = () => good / allCount() * 100
+  const averageCount = () => (good - bad) / allCount()  || 0
+  const positivePercent = () => good / allCount() * 100  || 0
 
   return (
     <div>
@@ -30,8 +30,8 @@ const App = () => {
       <Counter text='neutral' count={neutral} />
       <Counter text='bad' count={bad} />
       <Counter text='all' count={allCount()} />
-      <Counter text='average' count={averageCount() || 0} />
-      <Counter text='positive' count={`${positivePercent() || 0} %`} />
+      <Counter text='average' count={averageCount()} />
+      <Counter text='positive' count={`${positivePercent()} %`} />
     </div>
   )
 }
