@@ -4,7 +4,7 @@ const Header = ({text}) => <h1>{text}</h1>
 
 const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</button> 
 
-const Measures = ({text, count}) => <p>{text} {count}</p>
+const StatisticLine = ({text, value}) => <p>{text} {value}</p>
 
 const Statistics = ({good, neutral, bad}) => {
   const allCount = bad + good + neutral;
@@ -12,14 +12,14 @@ const Statistics = ({good, neutral, bad}) => {
   const positivePercent = good / allCount * 100 
 
   return allCount ? (
-    <>
-      <Measures text='good' count={good} />
-      <Measures text='neutral' count={neutral} />
-      <Measures text='bad' count={bad} />
-      <Measures text='all' count={allCount} />
-      <Measures text='average' count={averageCount} />
-      <Measures text='positive' count={`${positivePercent} %`} /> 
-    </>
+    <div>
+      <StatisticLine text='good' value={good} />
+      <StatisticLine text='neutral' value={neutral} />
+      <StatisticLine text='bad' value={bad} />
+      <StatisticLine text='all' value={allCount} />
+      <StatisticLine text='average' value={averageCount} />
+      <StatisticLine text='positive' value={`${positivePercent} %`} /> 
+    </div>
   ) : <p>No feedback given</p>
 }
 
