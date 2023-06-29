@@ -6,14 +6,6 @@ const Content = ({parts}) => parts.map(({id, name, exercises}) => <Part key={id}
 
 const Total = ({parts}) => <b><p>total of {parts.reduce((accu, {exercises}) => accu += exercises, 0)} exercises</p></b>; 
 
-const Course = ({course: {name, parts}}) => {
-    return (
-        <>
-            <Header name={name} />
-            <Content parts={parts} />
-            <Total parts={parts} />
-        </>
-    )
-}
+const Course = ({courses}) => courses.map(({id, name, parts}) => <div key={id}><Header name={name} /><Content parts={parts} /><Total parts={parts} /></div>)
 
 export default Course
