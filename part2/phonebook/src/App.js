@@ -24,13 +24,20 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const data = {name: newName, number: newNumber}
     if (persons.some(({name}) => name === newName)) {
-      alert(`${newName} is already added to phonebook`)
-      return
+      if (!window.confirm(`${newName} is already added to phonebook, replace the old number with new one?`)) return
+      const {id} = persons.find(({name}) => name === data.name);
+      personsService
+        .updatePerson(id, data)
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id == returnedPerson.id ? returnedPerson: person))
+        })
+    } else {
+      personsService
+        .addPerson(data)
+        .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
     }
-    personsService
-      .addPerson({name: newName, number: newNumber})
-      .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
   }
 
   const handleDelete = (personId, name) => {
