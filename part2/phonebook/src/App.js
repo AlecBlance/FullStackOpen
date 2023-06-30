@@ -36,7 +36,8 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
       return
     }
-    setPersons(persons.concat({name: newName, number: newNumber}))
+    const data = {name: newName, number: newNumber}
+    axios.post('http://localhost:3001/persons', data).then((response) => setPersons(persons.concat(response.data)))
   }
 
   const formInput = {
