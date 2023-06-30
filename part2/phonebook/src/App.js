@@ -16,17 +16,11 @@ const App = () => {
       .then(initialPersons => setPersons(initialPersons))
   }, [])
 
-  const handleNameInput = (e) => {
-    setNewName(e.target.value)
-  }
+  const handleNameInput = (e) => setNewName(e.target.value)
 
-  const handleNumberInput = (e) => {
-    setNewNumber(e.target.value)
-  }
+  const handleNumberInput = (e) => setNewNumber(e.target.value)
 
-  const handleFilterInput = (e) => {
-    setFilter(e.target.value)
-  }
+  const handleFilterInput = (e) => setFilter(e.target.value)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -35,8 +29,14 @@ const App = () => {
       return
     }
     personsService
-      .add({name: newName, number: newNumber})
+      .addPerson({name: newName, number: newNumber})
       .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+  }
+
+  const handleDelete = (personId, name) => {
+    if (!window.confirm(`Delete ${name} ?`)) return
+    personsService.deletePerson(personId)
+      .then(setPersons(persons.filter(({id}) => id !== personId)))
   }
 
   const formInput = {
@@ -57,7 +57,7 @@ const App = () => {
       <h3>add a new</h3>
       <PersonForm submitCallback={handleSubmit} inputData={formInput} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} deleteCallback={handleDelete}/>
     </div>
   )
 }
