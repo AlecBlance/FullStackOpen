@@ -26,7 +26,8 @@ const App = () => {
     <div>
       find countries <input value={search} onChange={handleCountrySearch} />
       <div>
-        {filteredCountries.length > 10 ? <p>Too many matches, specify another filter</p>
+        { !search ? null 
+        : filteredCountries.length > 10 ? <p>Too many matches, specify another filter</p>
         : filteredCountries.length == 1 ? <CountryData country={filteredCountries[0]} /> 
         : <Countries countries={filteredCountries} handleShow={setFilteredCountries}/>}
       </div>
