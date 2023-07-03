@@ -2,6 +2,7 @@ import { useState, useEffect} from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personsService from './services/persons'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState({})
 
   useEffect(() => {
     personsService
@@ -32,11 +34,17 @@ const App = () => {
         .updatePerson(id, data)
         .then(returnedPerson => {
           setPersons(persons.map(person => person.id == returnedPerson.id ? returnedPerson: person))
-        })
+          setNotification({message: `Updated ${data.name}'s number`, success: true})})
+        .catch(error => setNotification({message: `Information of ${data.name} has already been removed from server`, success: false}))
+        .finally(setTimeout(() => setNotification({}), 5000))
     } else {
       personsService
         .addPerson(data)
-        .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNotification({message:`Added ${data.name}`, success: true})
+          setTimeout(() => setNotification({}), 5000)
+        })
     }
   }
 
@@ -60,6 +68,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notification}/>
       <Filter filter={filter} callback={handleFilterInput} />
       <h3>add a new</h3>
       <PersonForm submitCallback={handleSubmit} inputData={formInput} />
