@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
-import axios from 'axios'
 import CountryData from './components/CountryData'
 import Countries from './components/Countries'
+import countriesService from './services/countries'
 
 const App = () => {
   const [countries, setCountries] = useState(null)
@@ -9,9 +9,7 @@ const App = () => {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    axios
-      .get('https://studies.cs.helsinki.fi/restcountries/api/all')
-      .then(countries => setCountries(countries.data))
+      countriesService.getCountries().then(countries => setCountries(countries))
   }, [])
 
   if (!countries) return
