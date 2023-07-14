@@ -1,0 +1,32 @@
+{
+  "name": "blog-list",
+  "version": "1.0.0",
+  "description": "allows users to save information about interesting blogs they have stumbled across on the internet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlecBlance/FullStackOpen.git#main"
+  },
+  "keywords": [
+    "blog",
+    "list"
+  ],
+  "author": "Alec Blance",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlecBlance/FullStackOpen/issues"
+  },
+  "homepage": "https://github.com/AlecBlance/FullStackOpen/tree/main#readme",
+  "dependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.44.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5"
+  }
+}
