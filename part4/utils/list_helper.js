@@ -14,8 +14,9 @@ const favoriteBlog = (blogs) => {
 
 const mostBlogs = (blogs) => {
   const blogsByAuthor = _.groupBy(blogs, 'author');
-  const blogCount = _.map(blogsByAuthor,
-    (blog, author) => ({ author, blogs: blog.length })
+  const blogCount = _.map(
+    blogsByAuthor,
+    (blog, author) => ({ author, blogs: blog.length }),
   );
   return _.maxBy(blogCount, 'blogs');
 };
