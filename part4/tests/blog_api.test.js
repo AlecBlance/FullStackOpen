@@ -98,6 +98,15 @@ describe('When there is initially some blogs saved', () => {
       expect(await helper.blogsInDb()).toHaveLength(lengthBefore - 1);
     });
   });
+
+  describe('updating likes of a blog', () => {
+    test('succeeds with incremented number of likes', async () => {
+      const blogs = await helper.blogsInDb();
+      const { id, likes } = blogs[0];
+      const response = await api.put(`/api/blogs/${id}`);
+      expect(response.body.likes).toBe(likes + 1);
+    });
+  });
 });
 
 afterAll(async () => {
