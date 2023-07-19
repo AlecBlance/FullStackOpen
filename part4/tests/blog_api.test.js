@@ -62,6 +62,28 @@ describe('blogs', () => {
     const allBlogs = await helper.blogsInDb();
     expect(allBlogs[allBlogs.length - 1].likes).toBe(0);
   });
+
+  test('have no title', async () => {
+    const newBlogNoTitle = {
+      author: 'Alec Blance',
+      url: 'http://yay.com/likes',
+    };
+    await api
+      .post('/api/blogs')
+      .send(newBlogNoTitle)
+      .expect(400);
+  });
+
+  test('have no url', async () => {
+    const newBlogNoUrl = {
+      title: 'I have likes right?',
+      author: 'Alec Blance',
+    };
+    await api
+      .post('/api/blogs')
+      .send(newBlogNoUrl)
+      .expect(400);
+  });
 });
 
 afterAll(async () => {
