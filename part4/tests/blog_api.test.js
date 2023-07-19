@@ -4,27 +4,15 @@ const supertest = require('supertest');
 
 const app = require('../app');
 
-const api = supertest(app);
 const Blog = require('../models/blog');
 
-const initialBlogs = [
-  {
-    title: 'MERN is the Best',
-    author: 'Alec Blance',
-    url: 'http://yay.com/mern',
-    likes: 1,
-  },
-  {
-    title: 'Jobless at the moment',
-    author: 'Alec Blance',
-    url: 'http://yay.com/jobless',
-    likes: 2,
-  },
-];
+const helper = require('./test_helper');
+
+const api = supertest(app);
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  const blogObjects = initialBlogs.map((blog) => new Blog(blog));
+  const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog));
   const promiseArray = blogObjects.map((blog) => blog.save());
   await Promise.all(promiseArray);
 });
@@ -35,12 +23,12 @@ describe('blogs', () => {
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/);
-    expect(response.body).toHaveLength(initialBlogs.length);
+    expect(response.body).toHaveLength(helper.initialBlogs.length);
   });
 
   test('has id instead of _id', async () => {
-    const response = await api.get('/api/blogs');
-    expect(response.body[0].id).toBeDefined();
+    const response = await helper.blogsInDb();
+    expect(response[0].id).toBeDefined();
   });
 
   test('can be created', async () => {
@@ -55,9 +43,24 @@ describe('blogs', () => {
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/);
-    const allBlogsResponse = await api.get('/api/blogs');
-    expect(allBlogsResponse.body).toHaveLength(initialBlogs.length + 1);
+    const allBlogs = await helper.blogsInDb();
+    expect(allBlogs).toHaveLength(helper.initialBlogs.length + 1);
     expect(addResponse.body).toMatchObject(newBlog);
+  });
+
+  test('have likes', async () => {
+    const newBlogNoLikes = {
+      title: 'I have likes right?',
+      author: 'Alec Blance',
+      url: 'http://yay.com/likes',
+    };
+    await api
+      .post('/api/blogs')
+      .send(newBlogNoLikes)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+    const allBlogs = await helper.blogsInDb();
+    expect(allBlogs[allBlogs.length - 1].likes).toBe(0);
   });
 });
 
