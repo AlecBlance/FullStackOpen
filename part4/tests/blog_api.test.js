@@ -42,6 +42,23 @@ describe('blogs', () => {
     const response = await api.get('/api/blogs');
     expect(response.body[0].id).toBeDefined();
   });
+
+  test('can be created', async () => {
+    const newBlog = {
+      title: 'Definitely a new blog',
+      author: 'Alec Blance',
+      url: 'http://yay.com/newBlog',
+      likes: 0,
+    };
+    const addResponse = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+    const allBlogsResponse = await api.get('/api/blogs');
+    expect(allBlogsResponse.body).toHaveLength(initialBlogs.length + 1);
+    expect(addResponse.body).toMatchObject(newBlog);
+  });
 });
 
 afterAll(async () => {
