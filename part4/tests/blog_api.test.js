@@ -29,12 +29,19 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-test('blogs returns the correct amount of blog posts', async () => {
-  const response = await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/);
-  expect(response.body).toHaveLength(initialBlogs.length);
+describe('blogs', () => {
+  test('returns the correct amount of blog posts', async () => {
+    const response = await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+    expect(response.body).toHaveLength(initialBlogs.length);
+  });
+
+  test('has id instead of _id', async () => {
+    const response = await api.get('/api/blogs');
+    expect(response.body[0].id).toBeDefined();
+  });
 });
 
 afterAll(async () => {
