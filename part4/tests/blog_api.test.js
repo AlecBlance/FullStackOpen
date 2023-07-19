@@ -17,7 +17,7 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-describe('blogs', () => {
+describe('When there is initially some blogs saved', () => {
   test('returns the correct amount of blog posts', async () => {
     const response = await api
       .get('/api/blogs')
@@ -31,58 +31,72 @@ describe('blogs', () => {
     expect(response[0].id).toBeDefined();
   });
 
-  test('can be created', async () => {
-    const newBlog = {
-      title: 'Definitely a new blog',
-      author: 'Alec Blance',
-      url: 'http://yay.com/newBlog',
-      likes: 0,
-    };
-    const addResponse = await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(201)
-      .expect('Content-Type', /application\/json/);
-    const allBlogs = await helper.blogsInDb();
-    expect(allBlogs).toHaveLength(helper.initialBlogs.length + 1);
-    expect(addResponse.body).toMatchObject(newBlog);
+  describe('addition of a new blog', () => {
+    test('can be created', async () => {
+      const newBlog = {
+        title: 'Definitely a new blog',
+        author: 'Alec Blance',
+        url: 'http://yay.com/newBlog',
+        likes: 0,
+      };
+      const addResponse = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+      const allBlogs = await helper.blogsInDb();
+      expect(allBlogs).toHaveLength(helper.initialBlogs.length + 1);
+      expect(addResponse.body).toMatchObject(newBlog);
+    });
+
+    test('have likes', async () => {
+      const newBlogNoLikes = {
+        title: 'I have likes right?',
+        author: 'Alec Blance',
+        url: 'http://yay.com/likes',
+      };
+      await api
+        .post('/api/blogs')
+        .send(newBlogNoLikes)
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+      const allBlogs = await helper.blogsInDb();
+      expect(allBlogs[allBlogs.length - 1].likes).toBe(0);
+    });
+
+    test('error if no title', async () => {
+      const newBlogNoTitle = {
+        author: 'Alec Blance',
+        url: 'http://yay.com/likes',
+      };
+      await api
+        .post('/api/blogs')
+        .send(newBlogNoTitle)
+        .expect(400);
+    });
+
+    test('error if no url', async () => {
+      const newBlogNoUrl = {
+        title: 'I have likes right?',
+        author: 'Alec Blance',
+      };
+      await api
+        .post('/api/blogs')
+        .send(newBlogNoUrl)
+        .expect(400);
+    });
   });
 
-  test('have likes', async () => {
-    const newBlogNoLikes = {
-      title: 'I have likes right?',
-      author: 'Alec Blance',
-      url: 'http://yay.com/likes',
-    };
-    await api
-      .post('/api/blogs')
-      .send(newBlogNoLikes)
-      .expect(201)
-      .expect('Content-Type', /application\/json/);
-    const allBlogs = await helper.blogsInDb();
-    expect(allBlogs[allBlogs.length - 1].likes).toBe(0);
-  });
-
-  test('have no title', async () => {
-    const newBlogNoTitle = {
-      author: 'Alec Blance',
-      url: 'http://yay.com/likes',
-    };
-    await api
-      .post('/api/blogs')
-      .send(newBlogNoTitle)
-      .expect(400);
-  });
-
-  test('have no url', async () => {
-    const newBlogNoUrl = {
-      title: 'I have likes right?',
-      author: 'Alec Blance',
-    };
-    await api
-      .post('/api/blogs')
-      .send(newBlogNoUrl)
-      .expect(400);
+  describe('deletion of a blog', () => {
+    test('succeeds with status 204 if id is valid', async () => {
+      const blogs = await helper.blogsInDb();
+      const validId = blogs[0].id;
+      const lengthBefore = blogs.length;
+      await api
+        .delete(`/api/blogs/${validId}`)
+        .expect(204);
+      expect(await helper.blogsInDb()).toHaveLength(lengthBefore - 1);
+    });
   });
 });
 
