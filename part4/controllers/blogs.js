@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 
@@ -12,8 +13,7 @@ blogsRouter.post('/', async (request, response) => {
   const { body } = request;
   if (!Object.prototype.hasOwnProperty.call(body, 'likes')) body.likes = 0;
   if (!Object.prototype.hasOwnProperty.call(body, 'title') || !Object.prototype.hasOwnProperty.call(body, 'url')) {
-    response.status(400).end();
-    return;
+    return response.status(400).end();
   }
   const blog = new Blog(body);
   const result = await blog.save();
