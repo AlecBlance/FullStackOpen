@@ -28,7 +28,11 @@ blogsRouter.post('/', async (request, response) => {
 });
 
 blogsRouter.delete('/:id', async (request, response) => {
+  const jwtId = jwt.verify(request.token, process.env.SECRET).id;
+  if (!jwtId) return response.status(401).json({ error: 'token invalid' });
   const { id } = request.params;
+  const { user } = await Blog.findById(id);
+  if (user.toString() !== jwtId) return response.status(400).json({ error: 'invalid authorization' });
   await Blog.findByIdAndRemove(id);
   response.status(204).end();
 });
