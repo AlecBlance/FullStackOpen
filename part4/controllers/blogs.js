@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
 const blogsRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
 const User = require('../models/user');
 
@@ -11,15 +12,22 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs);
 });
 
+const getToken = (request) => {
+  const authorization = request.get('authorization');
+  if (authorization && authorization.startsWith('Bearer ')) return authorization.replace('Bearer ', '');
+  return null;
+};
+
 blogsRouter.post('/', async (request, response) => {
   const { body } = request;
   if (!body.likes) body.likes = 0;
   if (!body.title || !body.url) return response.status(400).end();
-  const { _id } = (await User.aggregate([{ $sample: { size: 1 } }]))[0];
-  body.user = _id;
+  const { id } = jwt.verify(getToken(request), process.env.SECRET);
+  if (!id) return response.status(401).json({ error: 'token invalid' });
+  body.user = id;
   const blog = await new Blog(body).populate('user', { username: 1, name: 1 });
   const result = await blog.save();
-  const user = await User.findById(_id);
+  const user = await User.findById(id);
   user.blogs = user.blogs.concat(result._id);
   user.save();
   response.status(201).json(result);

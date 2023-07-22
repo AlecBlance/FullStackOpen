@@ -1,7 +1,20 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
-{"title": "Sample Blog",
+{
+  "title": "Sample Blog",
+  "author": "Alec Blance",
+  "url": "http://github.com",
+  "likes": 1
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZWNCbGFuY2UiLCJpZCI6IjY0YmI2MTIzNTdjNzcwMmEyNWVjNjU1MCIsImlhdCI6MTY5MDAwMzg4Nn0.-vhHTx35q80UjTGQUFzOqUCplRtqRf0S6Q28WeAb4Eo
+
+{
+  "title": "Sample Blog",
   "author": "Alec Blance",
   "url": "http://github.com",
   "likes": 1
