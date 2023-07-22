@@ -11,9 +11,12 @@ const api = supertest(app);
 describe('When there is initially some blogs saved', () => {
   beforeEach(async () => {
     await Blog.deleteMany({});
+    await User.deleteMany({});
     const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog));
-    const promiseArray = blogObjects.map((blog) => blog.save());
-    await Promise.all(promiseArray);
+    const promiseBlogArray = blogObjects.map((blog) => blog.save());
+    const userObjects = helper.initialUsers.map((user) => new User(user));
+    const promiseUserArray = userObjects.map((user) => user.save());
+    await Promise.all([...promiseBlogArray, ...promiseUserArray]);
   });
 
   test('returns the correct amount of blog posts', async () => {
@@ -37,9 +40,19 @@ describe('When there is initially some blogs saved', () => {
         url: 'http://yay.com/newBlog',
         likes: 0,
       };
+
+      const loginInfo = {
+        username: 'GawrGura',
+        password: 'gura',
+      };
+      const response = await api
+        .post('/api/login')
+        .send(loginInfo);
+      const { token } = response.body;
       const addResponse = await api
         .post('/api/blogs')
         .send(newBlog)
+        .set({ Authorization: `Bearer ${token}` })
         .expect(201)
         .expect('Content-Type', /application\/json/);
       const allBlogs = await helper.blogsInDb();
@@ -53,9 +66,19 @@ describe('When there is initially some blogs saved', () => {
         author: 'Alec Blance',
         url: 'http://yay.com/likes',
       };
+
+      const loginInfo = {
+        username: 'GawrGura',
+        password: 'gura',
+      };
+      const response = await api
+        .post('/api/login')
+        .send(loginInfo);
+      const { token } = response.body;
       await api
         .post('/api/blogs')
         .send(newBlogNoLikes)
+        .set({ Authorization: `Bearer ${token}` })
         .expect(201)
         .expect('Content-Type', /application\/json/);
       const allBlogs = await helper.blogsInDb();
@@ -83,15 +106,37 @@ describe('When there is initially some blogs saved', () => {
         .send(newBlogNoUrl)
         .expect(400);
     });
+
+    test('error 401 if unauthorized', async () => {
+      const newBlogNoUrl = {
+        title: 'I have likes right?',
+        author: 'Alec Blance',
+        url: 'http://lol.com',
+      };
+      await api
+        .post('/api/blogs')
+        .send(newBlogNoUrl)
+        .set({ Authorization: 'Bearer ' })
+        .expect(401);
+    });
   });
 
   describe('deletion of a blog', () => {
     test('succeeds with status 204 if id is valid', async () => {
       const blogs = await helper.blogsInDb();
-      const validId = blogs[0].id;
+      const validId = '5a422a851b54a676234d17f7';
       const lengthBefore = blogs.length;
+      const loginInfo = {
+        username: 'GawrGura',
+        password: 'gura',
+      };
+      const response = await api
+        .post('/api/login')
+        .send(loginInfo);
+      const { token } = response.body;
       await api
         .delete(`/api/blogs/${validId}`)
+        .set({ Authorization: `Bearer ${token}` })
         .expect(204);
       expect(await helper.blogsInDb()).toHaveLength(lengthBefore - 1);
     });

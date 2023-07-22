@@ -7,6 +7,7 @@ const initialBlogs = [
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
+    user: '64bb777a470967082076146d',
     likes: 7,
     __v: 0,
   },
@@ -52,6 +53,20 @@ const initialBlogs = [
   },
 ];
 
+const initialUsers = [
+  {
+    _id: '64bb777a470967082076146d',
+    username: 'GawrGura',
+    passwordHash: '$2b$10$u2DLYIBiCOKtzSSDIyfGIu1zKEDBXkNDlInv.Rnfx7J9/gdDlH5pG',
+    name: 'Gawr Gura',
+    blogs: [
+      '5a422a851b54a676234d17f7',
+    ],
+    __v: 0,
+  },
+
+];
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map((blog) => blog.toJSON());
@@ -66,4 +81,5 @@ module.exports = {
   blogsInDb,
   initialBlogs,
   usersInDb,
+  initialUsers,
 };
