@@ -1,4 +1,7 @@
 /* eslint-disable consistent-return */
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+
 const errorHandler = (error, request, response, next) => {
   if (error.name === 'ValidationError') return response.status(400).json({ error: error.message });
   if (error.name === 'JsonWebTokenError') return response.status(400).json({ error: error.message });
@@ -12,7 +15,16 @@ const tokenExtractor = (request, response, next) => {
   next();
 };
 
+const userExtractor = async (request, response, next) => {
+  if (request.token) {
+    const { id } = jwt.verify(request.token, process.env.SECRET);
+    request.user = await User.findById(id);
+  }
+  next();
+};
+
 module.exports = {
   errorHandler,
   tokenExtractor,
+  userExtractor,
 };
