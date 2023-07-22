@@ -12,17 +12,11 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs);
 });
 
-const getToken = (request) => {
-  const authorization = request.get('authorization');
-  if (authorization && authorization.startsWith('Bearer ')) return authorization.replace('Bearer ', '');
-  return null;
-};
-
 blogsRouter.post('/', async (request, response) => {
   const { body } = request;
   if (!body.likes) body.likes = 0;
   if (!body.title || !body.url) return response.status(400).end();
-  const { id } = jwt.verify(getToken(request), process.env.SECRET);
+  const { id } = jwt.verify(request.token, process.env.SECRET);
   if (!id) return response.status(401).json({ error: 'token invalid' });
   body.user = id;
   const blog = await new Blog(body).populate('user', { username: 1, name: 1 });
