@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,6 +12,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     (async () => {
@@ -36,17 +38,21 @@ const App = () => {
       window.localStorage.setItem(
         'userLogged', JSON.stringify(user)
       )
+      blogService.setToken(user.token)
       setUser(user)
       setPassword('')
       setUsername('')
-    } catch (exception) {
-
+      setNotification(null)
+    } catch ({response: { data }}) {
+      setNotification({message: data.error, error: true})
+      setTimeout(() => setNotification(null), 3000)
     }
   }
 
   const loginForm = () => (
     <div>
       <h1>log in to application</h1>
+      {notification && <Notification info={notification}/>}
       <form onSubmit={handleLogin}>
         <div>
           username 
@@ -73,8 +79,16 @@ const App = () => {
 
   const handleBlog = async (event) => {
     event.preventDefault()
-    const newBlog = await blogService.create({ title, author, url })
-    setBlogs(blogs.concat(newBlog))
+    try {
+      const newBlog = await blogService.create({ title, author, url })
+      setBlogs(blogs.concat(newBlog))
+      setNotification({message: `a new blog ${title} by ${author} added`, error: false})
+      setTimeout(() => setNotification(null), 3000)
+    } catch ({response: { data }}) {
+      setNotification({ message: data.error, error: true})
+      setTimeout(() => setNotification(null), 3000)
+    }
+    
   }
 
   const handleLogout = () => {
@@ -85,6 +99,7 @@ const App = () => {
   const blogsList = () => (
     <div>
       <h2>blogs</h2>
+      {notification && <Notification info={notification}/>}
       <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
       <h1>create new</h1>
       <form onSubmit={handleBlog}>
