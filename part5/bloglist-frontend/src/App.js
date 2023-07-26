@@ -13,15 +13,17 @@ const App = () => {
   const [url, setUrl] = useState('')
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    (async () => {
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)
+    })()
   }, [])
 
   useEffect(() => {
     const userLogged = window.localStorage.getItem('userLogged')
     if (userLogged) {
       const user = JSON.parse(userLogged)
+      blogService.setToken(user.token)
       setUser(user)
     }
   }, [])
@@ -71,7 +73,8 @@ const App = () => {
 
   const handleBlog = async (event) => {
     event.preventDefault()
-    // add more here 
+    const newBlog = await blogService.create({ title, author, url })
+    setBlogs(blogs.concat(newBlog))
   }
 
   const handleLogout = () => {
