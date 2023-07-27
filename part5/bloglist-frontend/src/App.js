@@ -73,6 +73,12 @@ const App = () => {
     const newBlogs = blogs.map((blog) => id === blog.id ? likedBlog : blog)
     setBlogs(newBlogs)
   }
+
+  const handleRemove = async (id) => {
+    await blogService.remove(id)
+    const newBlogs = blogs.filter((blog) => blog.id !== id)
+    setBlogs(newBlogs)
+  }
   
   const blogsList = () => (
     <div>
@@ -83,7 +89,15 @@ const App = () => {
         <BlogForm createBlog={ handleCreateBlog }/>
       </Togglable>
       {blogs.sort((a, b) => b.likes - a.likes)
-        .map(blog =><Blog key={blog.id} blog={blog} handleLikes={handleLikes}/>)
+        .map(blog =>
+          <Blog 
+            key={blog.id} 
+            blog={blog} 
+            handleLikes={handleLikes} 
+            removeButton={blog.user.username === user.username}
+            handleRemove={handleRemove}
+          />
+        )
       }
     </div>
   )

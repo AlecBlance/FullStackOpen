@@ -20,6 +20,13 @@ const create = async (data) => {
   return response.data
 }
 
+const remove = async (id) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  await axios.delete(`${baseUrl}/${id}`, config)
+}
+
 const like = async (id) => {
   const config = {
     headers: { Authorization: token }
@@ -34,4 +41,5 @@ export default {
   create,   
   setToken,
   like,
+  remove,
 }
