@@ -37,8 +37,8 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
       setNotification(null)
-    } catch ({response: { data }}) {
-      setNotification({message: data.error, error: true})
+    } catch ({ response: { data } }) {
+      setNotification({ message: data.error, error: true })
       setTimeout(() => setNotification(null), 3000)
     }
   }
@@ -55,10 +55,10 @@ const App = () => {
     try {
       const newBlog = await blogService.create(data)
       setBlogs(blogs.concat(newBlog))
-      setNotification({message: `a new blog ${data.title} by ${data.author} added`, error: false})
+      setNotification({ message: `a new blog ${data.title} by ${data.author} added`, error: false })
       setTimeout(() => setNotification(null), 3000)
-    } catch ({response: { data }}) {
-      setNotification({ message: data.error, error: true})
+    } catch ({ response: { data } }) {
+      setNotification({ message: data.error, error: true })
       setTimeout(() => setNotification(null), 3000)
     }
   }
@@ -79,7 +79,7 @@ const App = () => {
     const newBlogs = blogs.filter((blog) => blog.id !== id)
     setBlogs(newBlogs)
   }
-  
+
   const blogsList = () => (
     <div>
       <h2>blogs</h2>
@@ -90,10 +90,10 @@ const App = () => {
       </Togglable>
       {blogs.sort((a, b) => b.likes - a.likes)
         .map(blog =>
-          <Blog 
-            key={blog.id} 
-            blog={blog} 
-            handleLikes={handleLikes} 
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleLikes={handleLikes}
             removeButton={blog.user.username === user.username}
             handleRemove={handleRemove}
           />

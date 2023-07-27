@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
-const Blog = ({ blog , handleLikes, removeButton, handleRemove}) => {
+const Blog = ({ blog , handleLikes, removeButton, handleRemove }) => {
   const [visible, setVisible] = useState(false)
 
-  const showWhenVisible = {display: visible ? '': 'none'}
+  const showWhenVisible = { display: visible ? '': 'none' }
   const viewButtonLabel = visible ? 'hide': 'view'
 
   const toggleVisibility = () => setVisible(!visible)
 
   const remove = () => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) handleRemove(blog.id) 
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) handleRemove(blog.id)
   }
 
   return (
