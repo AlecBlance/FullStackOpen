@@ -67,6 +67,12 @@ const App = () => {
     setUser(null)
     window.localStorage.removeItem('userLogged')
   }
+
+  const handleLikes = async (id) => {
+    const likedBlog = await blogService.like(id)
+    const newBlogs = blogs.map((blog) => id === blog.id ? likedBlog : blog)
+    setBlogs(newBlogs)
+  }
   
   const blogsList = () => (
     <div>
@@ -77,7 +83,7 @@ const App = () => {
         <BlogForm createBlog={ handleCreateBlog }/>
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLikes={handleLikes}/>
       )}
     </div>
   )
