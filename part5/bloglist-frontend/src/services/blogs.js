@@ -33,12 +33,11 @@ const like = async (id) => {
   }
   const response = await axios.put(`${baseUrl}/${id}`, null, config)
   return response.data
-} 
+}
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default { 
+export default {
   getAll,
-  create,   
+  create,
   setToken,
   like,
   remove,
