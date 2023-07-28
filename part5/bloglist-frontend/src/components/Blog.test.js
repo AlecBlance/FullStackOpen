@@ -20,6 +20,7 @@ describe('<Blog />', () => {
 
   const mockHandleLikes = jest.fn()
   const mockHandleRemove = jest.fn()
+  const user = userEvent.setup()
 
   beforeEach(() => {
     container = render(
@@ -37,11 +38,18 @@ describe('<Blog />', () => {
   })
 
   test('url and likes shown when show button is clicked', async () => {
-    const user = userEvent.setup()
     const button = screen.getByText('view')
     await user.click(button)
 
     const div = container.querySelector('.togglableInfo')
     expect(div).not.toHaveStyle('display: none')
+  })
+
+  test('like button works by clicking twice', async () => {
+    const button = screen.getByText('like')
+    await user.click(button)
+    await user.click(button)
+
+    expect(mockHandleLikes.mock.calls).toHaveLength(2)
   })
 })
