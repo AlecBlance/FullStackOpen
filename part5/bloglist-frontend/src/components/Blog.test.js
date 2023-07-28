@@ -35,6 +35,3 @@ describe('<Blog />', () => {
     expect(div).toHaveStyle('display: none')
   })
 })
-
-
-// but does not render its
