@@ -6,7 +6,13 @@ describe('Blog app', function() {
       username: 'AlecBlance',
       password: 'alec',
     }
+    const user2 = {
+      name: 'GawrGura',
+      username: 'GawrGura',
+      password: 'gura',
+    }
     cy.request('POST', 'http://localhost:3003/api/users', user)
+    cy.request('POST', 'http://localhost:3003/api/users', user2)
     cy.visit('http://localhost:3000')
   })
 
@@ -70,7 +76,21 @@ describe('Blog app', function() {
     it('A blog can be removed by the creator', function() {
       cy.contains('view').click()
       cy.contains('remove').click()
-      cy.should('not.exist', 'First Blog Alec Blance')
+      cy.contains('First Blog Alec Blance').should('not.exist')
+    })
+
+    it('Blog\'s delete button can only be seen by creator', function() {
+      const user = {
+        username: 'GawrGura',
+        password: 'gura',
+      }
+
+      cy.contains('view').click()
+      cy.contains('remove')
+      cy.contains('logout').click()
+      cy.login(user)
+      cy.contains('view').click()
+      cy.contains('remove').should('not.exist')
     })
   })
 })
