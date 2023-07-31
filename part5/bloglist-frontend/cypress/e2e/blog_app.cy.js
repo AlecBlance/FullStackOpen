@@ -39,16 +39,32 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.login({ username: 'AlecBlance', password: 'alec' })
+      const blog = {
+        title: 'First Blog',
+        author: 'Alec Blance',
+        url: 'http://youneverknow.com/first',
+      }
+      const user = {
+        username: 'AlecBlance',
+        password: 'alec',
+      }
+      cy.login(user)
+      cy.createBlog(blog)
     })
 
     it('A blog can be created', function() {
       cy.contains('new note').click()
       cy.get('[name="author"]').type('Alec Blance')
       cy.get('[name="title"]').type('Cypress the best')
-      cy.get('[name="url"]').type('http://youneverknow.com')
+      cy.get('[name="url"]').type('http://youneverknow.com/cypress')
       cy.get('#blogForm').click()
       cy.contains('Cypress the best Alec Blance')
+    })
+
+    it('A blog can be liked', function() {
+      cy.contains('view').click()
+      cy.contains('like').click()
+      cy.contains('likes:1')
     })
   })
 })
