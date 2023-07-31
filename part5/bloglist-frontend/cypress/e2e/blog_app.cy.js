@@ -92,5 +92,33 @@ describe('Blog app', function() {
       cy.contains('view').click()
       cy.contains('remove').should('not.exist')
     })
+
+    it('Blogs are ordered according to likes', function() {
+      const blog = {
+        title: 'The title with the most likes',
+        author: 'Alec Blance',
+        url: 'http://idk.com'
+      }
+      const blog2 = {
+        title: 'The title with the second most likes',
+        author: 'Alec Blance',
+        url: 'http://idk.com'
+      }
+      cy.createBlog(blog)
+      cy.createBlog(blog2)
+
+      cy.contains('The title with the most likes').parent().find('button').as('mostLikesButtons').contains('view').click()
+      cy.get('@mostLikesButtons').contains('like').click()
+      cy.contains('likes:1')
+      cy.get('@mostLikesButtons').contains('like').click()
+      cy.contains('likes:2')
+
+      cy.contains('The title with the second most likes').parent().find('button').as('secondMostLikesButtons').contains('view').click()
+      cy.get('@secondMostLikesButtons').contains('like').click()
+      cy.contains('likes:1')
+
+      cy.get('.blog').eq(0).should('contain', 'The title with the most likes')
+      cy.get('.blog').eq(1).should('contain', 'The title with the second most likes')
+    })
   })
 })
