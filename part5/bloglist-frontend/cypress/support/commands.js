@@ -33,16 +33,20 @@ Cypress.Commands.add('login', ({ username, password }) => {
   })
 })
 
-Cypress.Commands.add('createBlog', ({ title, author, url }) => {
+Cypress.Commands.add('createBlog', (blog) => {
   const { token } = JSON.parse(localStorage.getItem('userLogged'))
   cy.request({
     method: 'POST',
     url: 'http://localhost:3003/api/blogs',
-    body : { title, author, url, },
+    body : blog,
     headers: {
       Authorization: `Bearer ${token}`
     }
   }).then(() => {
     cy.visit('http://localhost:3000')
   })
+})
+
+Cypress.Commands.add('createUser', (user) => {
+  cy.request('POST', 'http://localhost:3003/api/users', user)
 })

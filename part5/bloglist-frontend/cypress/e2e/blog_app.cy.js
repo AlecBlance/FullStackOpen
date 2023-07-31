@@ -11,8 +11,8 @@ describe('Blog app', function() {
       username: 'GawrGura',
       password: 'gura',
     }
-    cy.request('POST', 'http://localhost:3003/api/users', user)
-    cy.request('POST', 'http://localhost:3003/api/users', user2)
+    cy.createUser(user)
+    cy.createUser(user2)
     cy.visit('http://localhost:3000')
   })
 
