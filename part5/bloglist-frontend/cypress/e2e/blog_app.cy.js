@@ -36,4 +36,19 @@ describe('Blog app', function() {
       cy.contains('Alec Blance logged in').should('not.exist')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'AlecBlance', password: 'alec' })
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('new note').click()
+      cy.get('[name="author"]').type('Alec Blance')
+      cy.get('[name="title"]').type('Cypress the best')
+      cy.get('[name="url"]').type('http://youneverknow.com')
+      cy.get('#blogForm').click()
+      cy.contains('Cypress the best Alec Blance')
+    })
+  })
 })
