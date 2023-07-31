@@ -66,5 +66,11 @@ describe('Blog app', function() {
       cy.contains('like').click()
       cy.contains('likes:1')
     })
+
+    it('A blog can be removed by the creator', function() {
+      cy.contains('view').click()
+      cy.contains('remove').click()
+      cy.should('not.exist', 'First Blog Alec Blance')
+    })
   })
 })
