@@ -16,11 +16,11 @@ const Blog = ({ blog , handleLikes, removeButton, handleRemove }) => {
     <div className='blog'>
       <div>
         {blog.title} {blog.author}
-        <button onClick={toggleVisibility}>{viewButtonLabel}</button>
+        <button className='viewButton' onClick={toggleVisibility}>{viewButtonLabel}</button>
       </div>
       <div style={showWhenVisible} className='togglableInfo'>
         <p>{blog.url}</p>
-        <p>likes:{blog.likes} <button onClick={() => handleLikes(blog.id)}>like</button></p>
+        <p>likes:{blog.likes} <button className='likeButton' onClick={() => handleLikes(blog.id)}>like</button></p>
         <p>{blog.user.name}</p>
         {removeButton && (<button onClick={remove}>remove</button>)}
       </div>
