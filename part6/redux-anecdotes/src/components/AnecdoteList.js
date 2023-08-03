@@ -10,8 +10,6 @@ const AnecdoteList = () => {
     dispatch(voteFor(id))
   }
 
-  console.log('HERE', anecdotes)
-
   return (
     <>
     {anecdotes.sort((a,b)=> b.votes-a.votes).map(anecdote =>
