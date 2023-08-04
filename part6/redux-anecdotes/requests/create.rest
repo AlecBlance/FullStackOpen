@@ -1,0 +1,8 @@
+POST http://localhost:3001/anecdotes
+Content-Type: application/json
+
+{
+    "content": "New by me",
+    "id": "8345345",
+    "votes": 0
+}
