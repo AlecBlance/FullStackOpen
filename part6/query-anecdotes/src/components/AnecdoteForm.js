@@ -14,6 +14,11 @@ const AnecdoteForm = () => {
       dispatch({type: 'SET', payload: `anecdote '${newAnecdote.content}' has been added`})
       setTimeout(() => dispatch({type: 'REMOVE'}), 5000)
     },
+    onError: ({ response }) => {
+      const { error } = response.data
+      dispatch({type: 'SET', payload: error})
+      setTimeout(() => dispatch({type: 'REMOVE'}), 5000)
+    }
   })
 
   const onCreate = (event) => {
