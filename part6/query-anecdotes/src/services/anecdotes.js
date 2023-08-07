@@ -23,3 +23,10 @@ export const create = async (content) => {
     const response = await axios.post(baseUrl, newContent)
     return response.data
 }
+
+export const update = async (anecdote) => {
+  const { id } = anecdote
+  const newAnecdote = {...anecdote, votes: anecdote.votes + 1}
+  const response = await axios.put(`${baseUrl}/${id}`, newAnecdote)
+  return response.data
+}
