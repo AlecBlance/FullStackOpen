@@ -18,7 +18,6 @@ export const getAll = async () => {
 }
 
 export const create = async (content) => {
-    if (content.length < 5) return 
     const newContent = asObject(content)
     const response = await axios.post(baseUrl, newContent)
     return response.data
