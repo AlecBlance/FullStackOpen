@@ -2,16 +2,20 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { getAll, update } from './services/anecdotes'
+import { useNotificationDispatch } from './NotificationContext'
 
 const App = () => {
 
   const queryClient = useQueryClient()
+  const dispatch = useNotificationDispatch()
 
   const voteMutation = useMutation(update, {
     onSuccess: (updatedAnecdote) => {
       const anecdotes = queryClient.getQueryData('anecdotes')
       const newAnecdotes = anecdotes.map(anecdote => anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote)
       queryClient.setQueryData('anecdotes', newAnecdotes)
+      dispatch({type: 'SET', payload: `anecdote '${updatedAnecdote.content}' voted`})
+      setTimeout(() => dispatch({type: 'REMOVE'}), 5000)
     }
   })
 
