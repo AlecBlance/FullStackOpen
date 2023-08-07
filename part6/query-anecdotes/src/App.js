@@ -23,8 +23,6 @@ const App = () => {
 
   const anecdotes = result.data
 
-  console.log(anecdotes)
-
   return (
     <div>
       <h3>Anecdote app</h3>
