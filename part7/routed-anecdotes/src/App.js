@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { 
-  Routes, Route, Link, useMatch
+  Routes, Route, Link, useMatch, useNavigate
 } from 'react-router-dom'
 
 const Menu = () => {
@@ -54,6 +54,15 @@ const Footer = () => (
     See <a href='https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js</a> for the source code.
   </div>
 )
+
+const Notification = ({message}) => {
+
+  return (
+    <div>
+      {message}
+    </div>
+  )
+}
 
 const CreateNew = (props) => {
   const [content, setContent] = useState('')
@@ -113,10 +122,14 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
+  const navigate = useNavigate()
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`a new anecdote ${anecdote.content} created`)
+    navigate('/')
+    setTimeout(() => setNotification(''), 5000)
   }
 
   const anecdoteById = (id) =>
@@ -140,6 +153,7 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      {notification && <Notification message={notification}/>}
       <Routes>
         <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdote}/>}/>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes}/>} />
