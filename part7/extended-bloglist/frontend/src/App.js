@@ -6,11 +6,16 @@ import loginService from "./services/login";
 import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
 import LoginForm from "./components/LoginForm";
+import { useDispatch } from "react-redux";
+import {
+  setNotification,
+  clearNotification,
+} from "./reducers/notificationReducer";
 
 const App = () => {
+  const dispatch = useDispatch();
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -34,17 +39,16 @@ const App = () => {
       window.localStorage.setItem("userLogged", JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
-      setNotification(null);
+      dispatch(clearNotification());
     } catch ({ response: { data } }) {
-      setNotification({ message: data.error, error: true });
-      setTimeout(() => setNotification(null), 3000);
+      dispatch(setNotification({ message: data.error, error: true }, 3));
     }
   };
 
   const loginForm = () => (
     <div>
       <h1>log in to application</h1>
-      {notification && <Notification info={notification} />}
+      <Notification />
       <LoginForm login={handleLogin} />
     </div>
   );
@@ -53,14 +57,17 @@ const App = () => {
     try {
       const newBlog = await blogService.create(data);
       setBlogs(blogs.concat(newBlog));
-      setNotification({
-        message: `a new blog ${data.title} by ${data.author} added`,
-        error: false,
-      });
-      setTimeout(() => setNotification(null), 3000);
+      dispatch(
+        setNotification(
+          {
+            message: `a new blog ${data.title} by ${data.author} added`,
+            error: false,
+          },
+          3
+        )
+      );
     } catch ({ response: { data } }) {
-      setNotification({ message: data.error, error: true });
-      setTimeout(() => setNotification(null), 3000);
+      dispatch(setNotification({ message: data.error, error: true }, 3));
     }
   };
 
@@ -84,7 +91,7 @@ const App = () => {
   const blogsList = () => (
     <div>
       <h2>blogs</h2>
-      {notification && <Notification info={notification} />}
+      <Notification />
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
