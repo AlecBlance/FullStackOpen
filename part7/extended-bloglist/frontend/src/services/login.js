@@ -1,7 +1,8 @@
-import axios from 'axios'
+import axios from "axios";
 
-const baseUrl = '/api/login'
+const baseUrl = "/api/login";
 
-const login = async (credentials) => (await axios.post(baseUrl, credentials)).data
+const login = async (credentials) =>
+  (await axios.post(baseUrl, credentials)).data;
 
-export default { login }
+export default { login };
