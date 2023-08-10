@@ -1,16 +1,32 @@
 import { useState } from "react";
+import { setBlogs } from "../reducers/blogsReducer";
+import blogService from "../services/blogs";
+import { useSelector, useDispatch } from "react-redux";
 
-const Blog = ({ blog, handleLikes, removeButton, handleRemove }) => {
+const Blog = ({ blog, removeButton }) => {
   const [visible, setVisible] = useState(false);
-
   const showWhenVisible = { display: visible ? "" : "none" };
   const viewButtonLabel = visible ? "hide" : "view";
+  const blogs = useSelector((state) => state.blogs);
+  const dispatch = useDispatch();
 
   const toggleVisibility = () => setVisible(!visible);
 
   const remove = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`))
       handleRemove(blog.id);
+  };
+
+  const handleLikes = async (id) => {
+    const likedBlog = await blogService.like(id);
+    const newBlogs = blogs.map((blog) => (id === blog.id ? likedBlog : blog));
+    dispatch(setBlogs(newBlogs));
+  };
+
+  const handleRemove = async (id) => {
+    await blogService.remove(id);
+    const newBlogs = blogs.filter((blog) => blog.id !== id);
+    dispatch(setBlogs(newBlogs));
   };
 
   return (
