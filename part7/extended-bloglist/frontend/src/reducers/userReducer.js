@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import blogService from "../services/blogs";
+import loginService from "../services/login";
+import { clearNotification, setNotification } from "./notificationReducer";
 
 const initialState = null;
 
@@ -30,6 +32,20 @@ export const logout = () => {
   return async (dispatch) => {
     dispatch(setUser(null));
     window.localStorage.removeItem("userLogged");
+  };
+};
+
+export const login = (data) => {
+  return async (dispatch) => {
+    try {
+      const user = await loginService.login(data);
+      window.localStorage.setItem("userLogged", JSON.stringify(user));
+      blogService.setToken(user.token);
+      dispatch(setUser(user));
+      dispatch(clearNotification());
+    } catch ({ response: { data } }) {
+      dispatch(setNotification({ message: data.error, error: true }, 3));
+    }
   };
 };
 

@@ -1,12 +1,6 @@
 import { useState } from "react";
-import blogService from "../services/blogs";
-import loginService from "../services/login";
 import { useDispatch } from "react-redux";
-import { setUser } from "../reducers/userReducer";
-import {
-  clearNotification,
-  setNotification,
-} from "../reducers/notificationReducer";
+import { login } from "../reducers/userReducer";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -14,21 +8,9 @@ const LoginForm = () => {
 
   const dispatch = useDispatch();
 
-  const login = async (data) => {
-    try {
-      const user = await loginService.login(data);
-      window.localStorage.setItem("userLogged", JSON.stringify(user));
-      blogService.setToken(user.token);
-      dispatch(setUser(user));
-      dispatch(clearNotification());
-    } catch ({ response: { data } }) {
-      dispatch(setNotification({ message: data.error, error: true }, 3));
-    }
-  };
-
   const handleLogin = (event) => {
     event.preventDefault();
-    login({ username, password });
+    dispatch(login({ username, password }));
     setPassword("");
     setUsername("");
   };
