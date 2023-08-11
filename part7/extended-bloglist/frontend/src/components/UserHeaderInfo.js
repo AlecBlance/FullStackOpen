@@ -13,7 +13,7 @@ const UserHeaderInfo = () => {
   };
 
   return (
-    <p>
+    <p className="userHeader">
       {user.name} logged in <button onClick={handleLogout}>logout</button>
     </p>
   );

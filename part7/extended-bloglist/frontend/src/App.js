@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { initializeBlogs } from "./reducers/blogsReducer";
 import { checkifLogged } from "./reducers/userReducer";
 import BlogList from "./components/BlogList";
-import UserHeaderInfo from "./components/UserHeaderInfo";
+import Header from "./components/Header";
 import { Route, Routes, useMatch } from "react-router-dom";
 import { initializeUsers } from "./reducers/usersReducer";
 import Users from "./components/Users";
@@ -43,9 +43,9 @@ const App = () => {
 
   const blogsList = () => (
     <div>
+      <Header />
       <h2>blogs</h2>
       <Notification />
-      <UserHeaderInfo />
       <Routes>
         <Route
           path="/"

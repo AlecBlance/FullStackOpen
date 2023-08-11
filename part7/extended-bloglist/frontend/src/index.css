@@ -23,3 +23,15 @@
   border: 1px solid;
   margin-bottom: 5px;
 }
+
+.header {
+  background-color: gray;
+}
+
+.header a {
+  margin-right: 10px;
+}
+
+.userHeader {
+  display: inline-block;
+}
