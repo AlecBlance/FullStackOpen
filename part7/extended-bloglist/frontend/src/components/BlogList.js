@@ -13,11 +13,7 @@ const BlogList = () => {
           .concat()
           .sort((a, b) => b.likes - a.likes)
           .map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              removeButton={blog.user.username === user.username}
-            />
+            <Blog key={blog.id} blog={blog} />
           ))}
       </div>
     )
