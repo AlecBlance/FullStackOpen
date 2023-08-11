@@ -8,13 +8,16 @@ import { initializeBlogs } from "./reducers/blogsReducer";
 import { checkifLogged } from "./reducers/userReducer";
 import BlogList from "./components/BlogList";
 import UserHeaderInfo from "./components/UserHeaderInfo";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useMatch } from "react-router-dom";
 import { initializeUsers } from "./reducers/usersReducer";
 import Users from "./components/Users";
+import UserInfo from "./components/UserInfo";
 
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const match = useMatch("/users/:id");
+  const id = match ? match.params.id : null;
 
   useEffect(() => {
     if (user) {
@@ -53,6 +56,7 @@ const App = () => {
           }
         />
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<UserInfo id={id} />} />
       </Routes>
     </div>
   );
