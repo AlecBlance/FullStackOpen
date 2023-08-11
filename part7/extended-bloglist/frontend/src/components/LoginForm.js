@@ -10,7 +10,7 @@ const LoginForm = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    dispatch(login({ username, password }));
+    dispatch(login({ username: username.value, password: password.value }));
     clearUsername();
     clearPassword();
   };
