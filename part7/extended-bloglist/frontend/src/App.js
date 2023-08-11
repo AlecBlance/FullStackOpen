@@ -8,19 +8,24 @@ import { initializeBlogs } from "./reducers/blogsReducer";
 import { checkifLogged } from "./reducers/userReducer";
 import BlogList from "./components/BlogList";
 import UserInfo from "./components/UserInfo";
+import { Route, Routes } from "react-router-dom";
+import { initializeUsers } from "./reducers/usersReducer";
+import Users from "./components/Users";
 
 const App = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(initializeBlogs());
-  }, [dispatch]);
+    if (user) {
+      dispatch(initializeBlogs());
+      dispatch(initializeUsers());
+    }
+  }, [dispatch, user]);
 
   useEffect(() => {
     dispatch(checkifLogged());
   }, [dispatch]);
-
-  const user = useSelector((state) => state.user);
 
   const loginForm = () => (
     <div>
@@ -35,10 +40,20 @@ const App = () => {
       <h2>blogs</h2>
       <Notification />
       <UserInfo />
-      <Togglable buttonLabel="new note">
-        <BlogForm />
-      </Togglable>
-      <BlogList />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Togglable buttonLabel="new note">
+                <BlogForm />
+              </Togglable>
+              <BlogList />
+            </>
+          }
+        />
+        <Route path="/users" element={<Users />} />
+      </Routes>
     </div>
   );
 
