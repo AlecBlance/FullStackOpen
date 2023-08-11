@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { initializeBlogs } from "./reducers/blogsReducer";
 import { checkifLogged } from "./reducers/userReducer";
 import BlogList from "./components/BlogList";
-import UserInfo from "./components/UserInfo";
+import UserHeaderInfo from "./components/UserHeaderInfo";
 import { Route, Routes } from "react-router-dom";
 import { initializeUsers } from "./reducers/usersReducer";
 import Users from "./components/Users";
@@ -39,7 +39,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notification />
-      <UserInfo />
+      <UserHeaderInfo />
       <Routes>
         <Route
           path="/"
