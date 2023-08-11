@@ -12,12 +12,15 @@ import { Route, Routes, useMatch } from "react-router-dom";
 import { initializeUsers } from "./reducers/usersReducer";
 import Users from "./components/Users";
 import UserInfo from "./components/UserInfo";
+import BlogInfo from "./components/BlogInfo";
 
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const match = useMatch("/users/:id");
-  const id = match ? match.params.id : null;
+  const matchUser = useMatch("/users/:id");
+  const matchBlog = useMatch("/blogs/:id");
+  const userId = matchUser ? matchUser.params.id : null;
+  const blogId = matchBlog ? matchBlog.params.id : null;
 
   useEffect(() => {
     if (user) {
@@ -56,7 +59,8 @@ const App = () => {
           }
         />
         <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<UserInfo id={id} />} />
+        <Route path="/users/:id" element={<UserInfo id={userId} />} />
+        <Route path="/blogs/:id" element={<BlogInfo id={blogId} />} />
       </Routes>
     </div>
   );
