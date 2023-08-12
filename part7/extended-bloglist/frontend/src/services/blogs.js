@@ -35,10 +35,24 @@ const like = async (id) => {
   return response.data;
 };
 
+const comment = async (data) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const { id, comment } = data;
+  const response = await axios.post(
+    `${baseUrl}/${id}/comments`,
+    { comment },
+    config
+  );
+  return response.data;
+};
+
 export default {
   getAll,
   create,
   setToken,
   like,
   remove,
+  comment,
 };

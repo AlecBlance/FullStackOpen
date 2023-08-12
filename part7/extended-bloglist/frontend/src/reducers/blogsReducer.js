@@ -70,4 +70,11 @@ export const createBlog = (data) => {
   };
 };
 
+export const commentBlog = (data) => {
+  return async (dispatch) => {
+    const response = await blogService.comment(data);
+    dispatch(updateBlog(response));
+  };
+};
+
 export default blogsSlice.reducer;

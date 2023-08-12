@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { likeBlog } from "../reducers/blogsReducer";
+import { likeBlog, commentBlog } from "../reducers/blogsReducer";
+import { useField } from "../hooks";
 
 const BlogInfo = ({ id }) => {
   const dispatch = useDispatch();
+  const [comment, clearComment] = useField("text");
 
   const blog = useSelector(
     (state) => state.blogs.filter((blog) => blog.id === id)[0]
@@ -10,6 +12,12 @@ const BlogInfo = ({ id }) => {
 
   const handleLikes = () => {
     dispatch(likeBlog(id));
+  };
+
+  const handleComment = (event) => {
+    event.preventDefault();
+    dispatch(commentBlog({ id, comment: comment.value }));
+    clearComment();
   };
 
   return (
@@ -25,6 +33,10 @@ const BlogInfo = ({ id }) => {
         </p>
         <p>added by {blog.user.name}</p>
         <h3>comments</h3>
+        <form onSubmit={handleComment}>
+          <input {...comment} />
+          <button>add comment</button>
+        </form>
         <ul>
           {blog.comments.map((comment, index) => (
             <li key={index}>{comment}</li>
