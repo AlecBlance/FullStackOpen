@@ -17,10 +17,10 @@ const UserHeaderInfo = () => {
   return (
     <div className="text-sm text-slate-400 flex items-center">
       <Avatar className="h-7 w-7" {...config} />
-      <p className="ml-2 mr-5">{user.name}</p>
+      <p className="ml-2 mr-5 font-semibold">{user.name}</p>
       <button onClick={handleLogout} className="h-7 w-7">
         <svg
-          className="fill-teal-400 h-4 w-4"
+          className="fill-teal-400 h-4 w-4 hover:fill-teal-300"
           id="Layer_1"
           viewBox="0 0 512 512"
           xmlns="http://www.w3.org/2000/svg"
