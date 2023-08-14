@@ -34,34 +34,45 @@ const App = () => {
   }, [dispatch]);
 
   const loginForm = () => (
-    <div>
-      <h1>log in to application</h1>
-      <Notification />
-      <LoginForm />
+    <div className="w-screen h-screen flex justify-center items-center">
+      <div className="p-8 rounded-lg w-5/6 md:w-3/4 lg:w-2/4 xl:w-1/4">
+        <h1 className="text-center text-white font-semibold text-2xl mb-10">
+          Share and learn together.
+        </h1>
+        <Notification />
+        <LoginForm />
+      </div>
     </div>
   );
 
   const blogsList = () => (
-    <div>
+    <div className="flex flex-col">
       <Header />
-      <h2>blogs</h2>
+      <div className="h-20 bg-gradient-to-r from-teal-500 to-blue-500 flex justify-center items-center">
+        <p className="text-white font-bold text-xl tracking-widest">BLOG</p>
+      </div>
       <Notification />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Togglable buttonLabel="new note">
-                <BlogForm />
-              </Togglable>
-              <BlogList />
-            </>
-          }
-        />
-        <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<UserInfo id={userId} />} />
-        <Route path="/blogs/:id" element={<BlogInfo id={blogId} />} />
-      </Routes>
+      <div className="mx-3 self-center md:w-4/6 mt-4 w-3/4 xl:w-2/6 md:mx-auto">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Togglable
+                  buttonLabel="Create blog"
+                  showClass="bg-teal-500	text-white p-3 w-full rounded-lg text-md"
+                >
+                  <BlogForm />
+                </Togglable>
+                <BlogList />
+              </>
+            }
+          />
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<UserInfo id={userId} />} />
+          <Route path="/blogs/:id" element={<BlogInfo id={blogId} />} />
+        </Routes>
+      </div>
     </div>
   );
 
