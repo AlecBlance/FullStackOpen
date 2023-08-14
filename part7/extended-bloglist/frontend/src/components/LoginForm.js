@@ -17,15 +17,26 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input {...username} />
+      <div className="bg-slate-800 p-3 pt-2 flex flex-col text-slate-400 rounded-xl my-3">
+        <p className="mb-1 text-xs">username</p>
+        <input
+          {...username}
+          className="bg-transparent text-slate-100 text-sm focus:border-none focus:outline-none"
+        />
       </div>
-      <div>
-        password
-        <input {...password} />
+      <div className="bg-slate-800 p-3 pt-2 flex flex-col text-slate-400 rounded-xl my-3">
+        <p className="mb-1 text-xs">password</p>
+        <input
+          {...password}
+          className="bg-transparent text-slate-100 text-sm focus:border-none focus:outline-none"
+        />
       </div>
-      <button type="submit">login</button>
+      <button
+        type="submit"
+        className="mt-10 bg-teal-500 rounded-3xl py-2 px-5 text-slate-200 text-sm font-semibold hover:bg-teal-400"
+      >
+        Login
+      </button>
     </form>
   );
 };
