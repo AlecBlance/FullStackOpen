@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
@@ -21,6 +21,7 @@ const App = () => {
   const matchBlog = useMatch("/blogs/:id");
   const userId = matchUser ? matchUser.params.id : null;
   const blogId = matchBlog ? matchBlog.params.id : null;
+  const blogFormRef = useRef();
 
   useEffect(() => {
     if (user) {
@@ -32,6 +33,8 @@ const App = () => {
   useEffect(() => {
     dispatch(checkifLogged());
   }, [dispatch]);
+
+  const toggleVisibility = () => blogFormRef.current.toggleVisibility();
 
   const loginForm = () => (
     <div className="w-screen h-screen flex justify-center items-center">
@@ -48,10 +51,10 @@ const App = () => {
   const blogsList = () => (
     <div className="flex flex-col">
       <Header />
-      <div className="h-20 bg-gradient-to-r from-teal-500 to-blue-500 flex justify-center items-center">
+      <div className="h-20 bg-gradient-to-r from-sky-400 to-blue-500 flex justify-center items-center">
         <p className="text-white font-bold text-xl tracking-widest">BLOG</p>
       </div>
-      <Notification />
+      <Notification inDashboard={matchBlog} />
       <div className="mx-3 self-center md:w-4/6 mt-4 w-3/4 xl:w-2/6 md:mx-auto">
         <Routes>
           <Route
@@ -60,9 +63,10 @@ const App = () => {
               <>
                 <Togglable
                   buttonLabel="Create blog"
-                  showClass="bg-teal-500	text-white p-3 w-full rounded-lg text-md"
+                  showClass="bg-teal-500 text-white p-3 w-full rounded-3xl text-md font-bold hover:bg-teal-400"
+                  ref={blogFormRef}
                 >
-                  <BlogForm />
+                  <BlogForm toggleVisibility={toggleVisibility} />
                 </Togglable>
                 <BlogList />
               </>
