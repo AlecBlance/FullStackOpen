@@ -58,7 +58,7 @@ export const createBlog = (data) => {
       dispatch(
         setNotification(
           {
-            message: `a new blog ${data.title} by ${data.author} added`,
+            message: `A new blog "${data.title}" by ${data.author} was added`,
             error: false,
           },
           3
