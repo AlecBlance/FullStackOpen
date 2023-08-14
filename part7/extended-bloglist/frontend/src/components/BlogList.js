@@ -8,7 +8,7 @@ const BlogList = () => {
   return (
     blogs &&
     user && (
-      <div>
+      <div className="last:border-none">
         {blogs
           .concat()
           .sort((a, b) => b.likes - a.likes)
