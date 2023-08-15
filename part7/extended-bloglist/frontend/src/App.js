@@ -80,12 +80,7 @@ const App = () => {
     </div>
   );
 
-  return (
-    <div>
-      {user && blogsList()}
-      {!user && loginForm()}
-    </div>
-  );
+  return <div>{user ? blogsList() : loginForm()}</div>;
 };
 
 export default App;
