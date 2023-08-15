@@ -3,13 +3,19 @@ import Avatar, { genConfig } from "react-nice-avatar";
 
 const Post = ({ owner, content, link }) => {
   const config = genConfig(owner);
+  const isAnotherPost = isValidElement(content);
   return (
     <div className="flex flex-col">
       <div className="flex items-center mb-5">
         <Avatar {...config} className="h-14 w-14 mr-5" />
-        <p className="font-semibold text-slate-200">{owner}</p>
+        <div>
+          <p className="font-semibold text-slate-200">{owner}</p>
+          <p className="text-slate-500 text-sm">
+            {isAnotherPost ? "added the following blog" : "authored"}
+          </p>
+        </div>
       </div>
-      {isValidElement(content) ? (
+      {isAnotherPost ? (
         <div className="flex items-center m-5 border border-slate-500 p-3 rounded-lg">
           {content}
         </div>
