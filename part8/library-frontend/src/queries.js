@@ -27,11 +27,17 @@ export const CREATE_BOOK = gql`
     $published: Int!
     $genres: [String!]!
   ) {
-    addPerson(
+    addBook(
       title: $title
       author: $author
       published: $published
       genres: $genres
-    )
+    ) {
+      title
+      published
+      author
+      id
+      genres
+    }
   }
 `;
