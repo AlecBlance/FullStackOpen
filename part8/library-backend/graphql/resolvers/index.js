@@ -1,5 +1,9 @@
 const Book = require("../../models/book");
 const Author = require("../../models/author");
+const User = require("../../models/user");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+require("dotenv").config();
 const { GraphQLError } = require("graphql");
 
 const resolvers = {
@@ -23,6 +27,7 @@ const resolvers = {
       return await Book.find().populate("author");
     },
     allAuthors: async () => await Author.find(),
+    me: (root, args, context) => context.currentUser,
   },
   Author: {
     bookCount: async (root) => {
@@ -31,7 +36,8 @@ const resolvers = {
     },
   },
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      if (!context.currentUser) throw new GraphQLError("Please login first");
       let author = await Author.findOne({ name: args.author });
       if (!author) {
         const newAuthor = new Author({ name: args.author });
@@ -62,11 +68,35 @@ const resolvers = {
         });
       }
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
+      if (!context.currentUser) throw new GraphQLError("Please login first");
       const author = await Author.findOne({ name: args.name });
       if (!author) return null;
       author.born = args.setBornTo;
       return await author.save();
+    },
+    createUser: async (root, args) => {
+      const password = await bcrypt.hash("yay", 10);
+      const user = new User({ ...args, password });
+      return await user.save();
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username });
+      const isPasswordCorrect = await bcrypt.compare(
+        args.password,
+        user.password
+      );
+      if (!isPasswordCorrect || !user) {
+        throw new GraphQLError("Wrong username or password");
+      }
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+        favoriteGenre: user.favoriteGenre,
+      };
+      if (isPasswordCorrect) {
+        return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
+      }
     },
   },
 };
