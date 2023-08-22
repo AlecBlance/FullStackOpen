@@ -35,12 +35,32 @@ const resolvers = {
       let author = await Author.findOne({ name: args.author });
       if (!author) {
         const newAuthor = new Author({ name: args.author });
-        author = await newAuthor.save();
+        try {
+          author = await newAuthor.save();
+        } catch (error) {
+          throw new GraphQLError("Saving Author failed", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              invalidArgs: args.author,
+              error,
+            },
+          });
+        }
       }
       const book = await new Book({ ...args, author: author._id }).populate(
         "author"
       );
-      return await book.save();
+      try {
+        return await book.save();
+      } catch (error) {
+        throw new GraphQLError("Saving Book failed", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.title,
+            error,
+          },
+        });
+      }
     },
     editAuthor: async (root, args) => {
       const author = await Author.findOne({ name: args.name });
