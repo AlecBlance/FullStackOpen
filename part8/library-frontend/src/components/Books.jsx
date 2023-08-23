@@ -5,7 +5,7 @@ import _ from "lodash";
 
 const Books = (props) => {
   const [genre, setGenre] = useState(null);
-  const result = useQuery(ALL_BOOKS, { variables: { genre } });
+  const result = useQuery(ALL_BOOKS, { variables: { genre: null } });
   if (result.loading) return <div>loading...</div>;
   // eslint-disable-next-line react/prop-types
   if (!props.show) {
@@ -38,11 +38,19 @@ const Books = (props) => {
         </tbody>
       </table>
       {allGenre.map((genre) => (
-        <button key={genre} onClick={() => setGenre(genre)}>
+        <button
+          key={genre}
+          onClick={() => {
+            setGenre(genre);
+            result.refetch({ genre });
+          }}
+        >
           {genre}
         </button>
       ))}
-      <button onClick={() => setGenre(null)}>all genres</button>
+      <button onClick={() => result.refetch({ genre: null })}>
+        all genres
+      </button>
     </div>
   );
 };
