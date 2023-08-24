@@ -33,10 +33,7 @@ const resolvers = {
     me: (root, args, context) => context.currentUser,
   },
   Author: {
-    bookCount: async (root) => {
-      const result = await Book.find({ author: root._id }).populate("author");
-      return result.length;
-    },
+    bookCount: async (root) => root.books.length,
   },
   Mutation: {
     addBook: async (root, args, context) => {
@@ -61,6 +58,8 @@ const resolvers = {
       );
       try {
         const save = await book.save();
+        author.books = author.books.concat(book._id);
+        author.save();
         pubsub.publish("BOOK_ADDED", { bookAdded: save });
         return save;
       } catch (error) {
