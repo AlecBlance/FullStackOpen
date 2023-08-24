@@ -15,7 +15,6 @@ export const updateCache = (cache, query, addedBook) => {
   };
 
   cache.updateQuery(query, ({ allBooks }) => {
-    console.log("tanan: ", allBooks);
     return {
       allBooks: uniqByName(allBooks.concat(addedBook)),
     };
