@@ -5,7 +5,7 @@ import _ from "lodash";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const updateCache = (cache, query, addedBook) => {
-  // helper that is used to eliminate saving same person twice
+  // helper that is used to eliminate saving same book twice
   const uniqByName = (a) => {
     let seen = new Set();
     return a.filter((item) => {
