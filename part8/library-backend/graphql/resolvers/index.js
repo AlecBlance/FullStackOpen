@@ -5,6 +5,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const { GraphQLError } = require("graphql");
+const { PubSub } = require("graphql-subscriptions");
+
+const pubsub = new PubSub();
 
 const resolvers = {
   Query: {
@@ -57,7 +60,9 @@ const resolvers = {
         "author"
       );
       try {
-        return await book.save();
+        const save = await book.save();
+        pubsub.publish("BOOK_ADDED", { bookAdded: save });
+        return save;
       } catch (error) {
         throw new GraphQLError("Saving Book failed", {
           extensions: {
@@ -97,6 +102,11 @@ const resolvers = {
       if (isPasswordCorrect) {
         return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
       }
+    },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator("BOOK_ADDED"),
     },
   },
 };
