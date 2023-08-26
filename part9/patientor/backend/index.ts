@@ -6,5 +6,5 @@ app.get("/api/ping", (_req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log("Server running at http://localhost:3002");
+  console.log("Server running at http://localhost:3001");
 });
