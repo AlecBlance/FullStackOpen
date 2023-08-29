@@ -1,6 +1,6 @@
-import { ContentProps } from "../types";
+import { TotalProps } from "../types";
 
-const Total = ({ parts }: ContentProps) => {
+const Total = ({ parts }: TotalProps) => {
   return (
     <p>
       Number of exercises{" "}

@@ -2,11 +2,15 @@ export interface HeaderProps {
   name: string;
 }
 
-interface Part {
+export interface CourseParts {
   name: string;
   exerciseCount: number;
 }
 
 export interface ContentProps {
-  parts: Part[];
+  parts: CourseParts[];
+}
+
+export interface TotalProps {
+  parts: CourseParts[];
 }
