@@ -13,10 +13,10 @@ const EntryForm = ({
   diaries: Entry[];
   setNotification: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const date = useField("text");
-  const visibility = useField("text");
-  const weather = useField("text");
-  const comment = useField("text");
+  const date = useField("date", "text");
+  const visibility = useField("visibility", "radio");
+  const weather = useField("weather", "radio");
+  const comment = useField("comment", "text");
 
   const handleEntry = async (e: React.SyntheticEvent): Promise<void> => {
     e.preventDefault();
@@ -42,10 +42,46 @@ const EntryForm = ({
           date <input {...date} />
         </div>
         <div>
-          visibility <input {...visibility} />
+          visibility{" "}
+          <label>
+            great
+            <input {...visibility} value="great" />
+          </label>
+          <label>
+            good
+            <input {...visibility} value="good" />
+          </label>
+          <label>
+            ok
+            <input {...visibility} value="ok" />
+          </label>
+          <label>
+            poor
+            <input {...visibility} value="poor" />
+          </label>
         </div>
         <div>
-          weather <input {...weather} />
+          weather{" "}
+          <label>
+            sunny
+            <input {...weather} value="sunny" />
+          </label>
+          <label>
+            rainy
+            <input {...weather} value="rainy" />
+          </label>
+          <label>
+            cloudy
+            <input {...weather} value="cloudy" />
+          </label>
+          <label>
+            stormy
+            <input {...weather} value="stormy" />
+          </label>
+          <label>
+            windy
+            <input {...weather} value="windy" />
+          </label>
         </div>
         <div>
           comment <input {...comment} />
