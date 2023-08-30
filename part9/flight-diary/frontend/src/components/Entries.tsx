@@ -5,7 +5,7 @@ const Entries = ({ diaries }: { diaries: Entry[] }) => {
     <div>
       <h1>Diary entries</h1>
       {diaries.map((diary) => (
-        <div>
+        <div key={diary.id}>
           <strong>{diary.date}</strong>
           <p>visibility: {diary.visibility}</p>
           <p>weather: {diary.weather}</p>
