@@ -6,4 +6,6 @@ export interface Entry {
   comment: string;
 }
 
+export type Error = string;
+
 export type NewEntry = Omit<Entry, "id">;

@@ -2,13 +2,16 @@ import React from "react";
 import diariesService from "../services/diaries";
 import { useField } from "../hooks";
 import { Entry } from "../types";
+import { AxiosError } from "axios";
 
 const EntryForm = ({
   setDiaries,
   diaries,
+  setNotification,
 }: {
   setDiaries: React.Dispatch<React.SetStateAction<Entry[]>>;
   diaries: Entry[];
+  setNotification: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const date = useField("text");
   const visibility = useField("text");
@@ -17,18 +20,23 @@ const EntryForm = ({
 
   const handleEntry = async (e: React.SyntheticEvent): Promise<void> => {
     e.preventDefault();
-    const addedEntry: Entry = await diariesService.addDiary({
-      date: date.value,
-      visibility: visibility.value,
-      weather: weather.value,
-      comment: comment.value,
-    });
-    setDiaries(diaries.concat(addedEntry));
+    try {
+      const addedEntry: Entry = await diariesService.addDiary({
+        date: date.value,
+        visibility: visibility.value,
+        weather: weather.value,
+        comment: comment.value,
+      });
+      setDiaries(diaries.concat(addedEntry));
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setNotification(error.response?.data);
+      }
+    }
   };
 
   return (
     <div>
-      <h1>Add new entry</h1>
       <form onSubmit={handleEntry}>
         <div>
           date <input {...date} />
