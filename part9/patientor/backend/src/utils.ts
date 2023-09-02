@@ -53,6 +53,7 @@ const parsePatientData = (object: unknown): NewPatient => {
     ssn: parseInput(object.ssn),
     gender: parseGender(object.gender),
     occupation: parseInput(object.occupation),
+    entries: [],
   };
   return newPatient;
 };

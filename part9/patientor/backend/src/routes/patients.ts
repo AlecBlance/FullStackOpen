@@ -9,6 +9,10 @@ patientsRouter.get("/", (_req, res) => {
   res.json(patientsService.getPatients());
 });
 
+patientsRouter.get("/:id", (req, res) => {
+  res.json(patientsService.getPatient(req.params.id));
+});
+
 patientsRouter.post("/", (req, res) => {
   try {
     console.log(req.body);
