@@ -10,7 +10,9 @@ patientsRouter.get("/", (_req, res) => {
 });
 
 patientsRouter.get("/:id", (req, res) => {
-  res.json(patientsService.getPatient(req.params.id));
+  const patient = patientsService.getPatient(req.params.id);
+  if (!patient) res.status(400);
+  res.json(patient);
 });
 
 patientsRouter.post("/", (req, res) => {
