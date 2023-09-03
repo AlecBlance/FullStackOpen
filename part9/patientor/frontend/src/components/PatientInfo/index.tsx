@@ -32,6 +32,20 @@ const PatientInfo = ({ id }: { id: string | undefined }) => {
       </h1>
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
+      <h2>entries</h2>
+      {patient.entries.map((entry) => (
+        <div key={entry.id}>
+          <p>
+            {entry.date}
+            <i>{entry.description}</i>
+          </p>
+          <ul>
+            {entry.diagnosisCodes?.map((code) => (
+              <li key={code}>{code}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 };
