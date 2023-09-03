@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import patientsService from "../../services/patients";
-import { Patient } from "../../types";
+import { Diagnosis, Patient } from "../../types";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 
-const PatientInfo = ({ id }: { id: string | undefined }) => {
+const PatientInfo = ({
+  id,
+  diagnoses,
+}: {
+  id: string | undefined;
+  diagnoses: Diagnosis[];
+}) => {
   const [patient, setPatient] = useState<Patient | null>(null);
 
   useEffect(() => {
@@ -41,7 +47,10 @@ const PatientInfo = ({ id }: { id: string | undefined }) => {
           </p>
           <ul>
             {entry.diagnosisCodes?.map((code) => (
-              <li key={code}>{code}</li>
+              <li key={code}>
+                {code}{" "}
+                {diagnoses.find((diagnosis) => diagnosis.code === code)?.name}
+              </li>
             ))}
           </ul>
         </div>
