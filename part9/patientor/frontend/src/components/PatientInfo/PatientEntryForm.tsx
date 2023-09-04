@@ -44,7 +44,7 @@ const PatientEntryForm = ({
       description,
       date,
       specialist,
-      diagnosisCodes: !diagnosisCodes
+      diagnosisCodes: diagnosisCodes
         ? diagnosisCodes.split(",").map((v) => v.trim())
         : [],
     };
