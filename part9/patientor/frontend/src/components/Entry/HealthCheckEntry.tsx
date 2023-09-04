@@ -26,12 +26,18 @@ const HealthCheckEntry = ({
       <div>
         <i>{entry.description}</i>
       </div>
-
-      {entry.healthCheckRating ? (
-        <FavoriteIcon style={{ color: "yellow" }} />
-      ) : (
-        <FavoriteIcon style={{ color: "green" }} />
-      )}
+      <FavoriteIcon
+        style={{
+          color:
+            entry.healthCheckRating === 0
+              ? "green"
+              : entry.healthCheckRating === 1
+              ? "yellow"
+              : entry.healthCheckRating === 2
+              ? "red"
+              : "blue",
+        }}
+      />
       <p style={{ margin: 0 }}>diagnosed by {entry.specialist}</p>
       <ul>
         {entry.diagnosisCodes?.map((code) => (
