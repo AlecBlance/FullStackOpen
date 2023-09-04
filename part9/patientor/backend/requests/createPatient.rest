@@ -17,7 +17,8 @@ Content-Type: application/json
   "description": "good",
   "date": "2023-1-4",
   "specialist": "Dr. Alban",
-  "type": "HealthCheck",
-  "healthCheckRating": "1",
-  "diagnosisCodes": "Z57.1, N30.0"
+  "type": "OccupationalHealthcare",
+  "diagnosisCodes": "Z57.1, N30.0",
+  "employerName": "Alec Blance",
+  "sickLeave": { "startDate": "2001-12-12", "endDate": "2001-12-12"}
 }

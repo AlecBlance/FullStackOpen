@@ -6,6 +6,7 @@ import {
   HealthCheckRating,
   EntryWithoutId,
   Discharge,
+  OccupationalHealthcareEntry,
 } from "./types";
 
 const isString = (text: unknown): text is string => {
@@ -105,9 +106,29 @@ const parseDischarge = (discharge: unknown): Discharge => {
     typeof discharge !== "object" ||
     !("date" in discharge && "criteria" in discharge)
   ) {
-    throw new Error("here Incorrect or missing data");
+    throw new Error("here Incorrect or missing discharge");
   }
   return discharge as Discharge;
+};
+
+const parseSickLeave = (
+  sickLeave: unknown
+): OccupationalHealthcareEntry["sickLeave"] => {
+  if (
+    !sickLeave ||
+    typeof sickLeave !== "object" ||
+    !("startDate" in sickLeave && "endDate" in sickLeave) ||
+    !isString(sickLeave.startDate) ||
+    !isString(sickLeave.endDate)
+  ) {
+    throw new Error("Incorrect or missing sick leave");
+  }
+  if (!sickLeave.startDate && !sickLeave.endDate) {
+    return { startDate: "", endDate: "" };
+  }
+  if (!isDate(sickLeave.startDate) || !isDate(sickLeave.endDate))
+    throw new Error("Incorrect or missing sick leave");
+  return { startDate: sickLeave.startDate, endDate: sickLeave.endDate };
 };
 
 export const parseEntryData = (object: unknown): EntryWithoutId => {
@@ -152,11 +173,12 @@ export const parseEntryData = (object: unknown): EntryWithoutId => {
       type: "Hospital",
     };
   } else {
-    if (!("employerName" in object))
+    if (!("employerName" in object && "sickLeave" in object))
       throw new Error("Incorrect data: employerName missing");
     return {
       ...newEntryBase,
       employerName: parseInput(object.employerName),
+      sickLeave: parseSickLeave(object.sickLeave),
       type: "OccupationalHealthcare",
     };
   }
