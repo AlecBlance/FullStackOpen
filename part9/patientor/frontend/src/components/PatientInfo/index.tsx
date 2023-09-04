@@ -83,7 +83,7 @@ const PatientInfo = ({
       />
       <h2>entries</h2>
       {patient.entries.map((entry) => (
-        <EntryDetails entry={entry} />
+        <EntryDetails key={entry.id} entry={entry} />
       ))}
     </div>
   );

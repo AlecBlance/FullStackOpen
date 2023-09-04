@@ -12,7 +12,6 @@ import { useState } from "react";
 import { Patient } from "../../types";
 import { EntryWithoutId } from "../../types";
 import { AxiosError } from "axios";
-import dayjs from "dayjs";
 
 const PatientEntryForm = ({
   id,
