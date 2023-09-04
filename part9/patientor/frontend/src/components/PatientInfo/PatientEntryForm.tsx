@@ -36,6 +36,8 @@ const PatientEntryForm = ({
   const [employerName, setEmployerName] = useState<string>("");
   const [dischargeDate, setdischargeDate] = useState<string>("");
   const [criteria, setCriteria] = useState<string>("");
+  const [sickLeaveStartDate, setsickLeaveStartDate] = useState<string>("");
+  const [sickLeaveEndDate, setsickLeaveEndDate] = useState<string>("");
 
   const clear = () => {
     setDescription("");
@@ -46,6 +48,8 @@ const PatientEntryForm = ({
     setEmployerName("");
     setdischargeDate("");
     setCriteria("");
+    setsickLeaveStartDate("");
+    setsickLeaveEndDate("");
   };
 
   const handleEntry = async (e: React.SyntheticEvent) => {
@@ -78,6 +82,10 @@ const PatientEntryForm = ({
       entry = {
         ...commonProperties,
         employerName,
+        sickLeave: {
+          startDate: sickLeaveStartDate,
+          endDate: sickLeaveEndDate,
+        },
         type: "OccupationalHealthcare",
       };
     }
@@ -217,14 +225,37 @@ const PatientEntryForm = ({
           </>
         )}
         {isOccupationalHealthcare && (
-          <TextField
-            id="standard-helperText"
-            label="Employer Name"
-            variant="standard"
-            style={{ width: "100%", marginBottom: "10px" }}
-            value={employerName}
-            onChange={(e) => setEmployerName(e.target.value)}
-          />
+          <>
+            <TextField
+              id="standard-helperText"
+              label="Employer Name"
+              variant="standard"
+              style={{ width: "100%", marginBottom: "10px" }}
+              value={employerName}
+              onChange={(e) => setEmployerName(e.target.value)}
+            />
+            <p>Sick Leave</p>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Start Date"
+                slotProps={{
+                  textField: { fullWidth: true, variant: "standard" },
+                }}
+                value={sickLeaveStartDate}
+                onChange={(e) => setsickLeaveStartDate(e ?? "")}
+              />
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="End Date"
+                slotProps={{
+                  textField: { fullWidth: true, variant: "standard" },
+                }}
+                value={sickLeaveEndDate}
+                onChange={(e) => setsickLeaveEndDate(e ?? "")}
+              />
+            </LocalizationProvider>
+          </>
         )}
         <div
           style={{

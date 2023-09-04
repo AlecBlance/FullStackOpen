@@ -35,6 +35,9 @@ const OccupationalHealthcareEntry = ({
           </li>
         ))}
       </ul>
+      <p>Sick Leave Schedule</p>
+      <p>Start Date: {entry.sickLeave?.startDate}</p>
+      <p>End Date: {entry.sickLeave?.endDate}</p>
     </div>
   );
 };
