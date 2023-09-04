@@ -25,7 +25,7 @@ patientsRouter.post("/", (req, res) => {
     if (error instanceof Error) {
       errorMessage += " Error: " + error.message;
     }
-    res.status(400).send(errorMessage);
+    res.status(400).send({ error: errorMessage });
   }
 });
 
@@ -38,7 +38,7 @@ patientsRouter.post("/:id/entries", (req, res) => {
     if (error instanceof Error) {
       errorMessage += " Error: " + error.message;
     }
-    res.status(400).send(errorMessage);
+    res.status(400).send({ error: errorMessage });
   }
 });
 
