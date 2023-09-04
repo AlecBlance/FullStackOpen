@@ -44,7 +44,9 @@ const PatientEntryForm = ({
       description,
       date,
       specialist,
-      diagnosisCodes: diagnosisCodes.split(",").map((v) => v.trim()),
+      diagnosisCodes: !diagnosisCodes
+        ? diagnosisCodes.split(",").map((v) => v.trim())
+        : [],
     };
 
     let entry: EntryWithoutId | null = null;
