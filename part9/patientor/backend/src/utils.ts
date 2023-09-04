@@ -85,11 +85,11 @@ const isHealthCheckRating = (
 
 const parseHealthCheckRating = (healthCheckRating: unknown): number => {
   if (
-    !isString(healthCheckRating) ||
-    !isHealthCheckRating(parseInt(healthCheckRating))
+    typeof healthCheckRating !== "number" ||
+    !isHealthCheckRating(healthCheckRating)
   )
     throw new Error("Incorrect or missing health check rating");
-  return parseInt(healthCheckRating);
+  return healthCheckRating;
 };
 
 const isType = (type: unknown): boolean => {
