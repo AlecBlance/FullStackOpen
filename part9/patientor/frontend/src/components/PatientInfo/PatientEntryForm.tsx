@@ -37,6 +37,17 @@ const PatientEntryForm = ({
   const [dischargeDate, setdischargeDate] = useState<string>("");
   const [criteria, setCriteria] = useState<string>("");
 
+  const clear = () => {
+    setDescription("");
+    setDate("");
+    setSpecialist("");
+    setDiagnosisCodes("");
+    setHealthCheckRating("");
+    setEmployerName("");
+    setdischargeDate("");
+    setCriteria("");
+  };
+
   const handleEntry = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
@@ -75,6 +86,7 @@ const PatientEntryForm = ({
 
     try {
       setPatient(await patientsService.createEntry(id, entry));
+      clear();
     } catch (error: unknown) {
       if (error instanceof AxiosError)
         setNotification(error.response?.data.error);
@@ -91,6 +103,7 @@ const PatientEntryForm = ({
           setOccupationalHealthcare(false);
           setHealthCheck(false);
           setIsFormPresent(true);
+          clear();
         }}
       >
         New Hospital
@@ -103,6 +116,7 @@ const PatientEntryForm = ({
           setOccupationalHealthcare(false);
           setHealthCheck(true);
           setIsFormPresent(true);
+          clear();
         }}
       >
         New HealthCheck
@@ -114,6 +128,7 @@ const PatientEntryForm = ({
           setOccupationalHealthcare(true);
           setHealthCheck(false);
           setIsFormPresent(true);
+          clear();
         }}
       >
         New Occupational Healthcare
