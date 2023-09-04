@@ -102,11 +102,10 @@ const isType = (type: unknown): boolean => {
 const parseDischarge = (discharge: unknown): Discharge => {
   if (
     !discharge ||
-    discharge !== Object ||
-    !("date" in discharge) ||
-    !("criteria" in discharge)
+    typeof discharge !== "object" ||
+    !("date" in discharge && "criteria" in discharge)
   ) {
-    throw new Error("Incorrect or missing data");
+    throw new Error("here Incorrect or missing data");
   }
   return discharge as Discharge;
 };
