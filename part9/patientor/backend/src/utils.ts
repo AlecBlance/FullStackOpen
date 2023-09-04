@@ -67,18 +67,12 @@ export const parsePatientData = (object: unknown): NewPatient => {
 };
 
 const parseDiagnosisCodes = (object: unknown): Array<Diagnosis["code"]> => {
-  if (
-    !object ||
-    typeof object !== "object" ||
-    !("diagnosisCodes" in object) ||
-    !isString(object.diagnosisCodes)
-  ) {
+  if (!object || typeof object !== "object" || !("diagnosisCodes" in object)) {
     // we will just trust the data to be in correct form
-    console.log("if block");
     return [] as Array<Diagnosis["code"]>;
   }
 
-  return object.diagnosisCodes.split(",").map((v) => v.trim());
+  return object.diagnosisCodes as Array<Diagnosis["code"]>;
 };
 
 const isHealthCheckRating = (
