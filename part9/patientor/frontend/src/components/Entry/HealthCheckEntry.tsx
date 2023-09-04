@@ -12,7 +12,11 @@ const HealthCheckEntry = ({
   return (
     <div
       key={entry.id}
-      style={{ border: "1px solid black", borderRadius: "10px" }}
+      style={{
+        border: "1px solid black",
+        borderRadius: "10px",
+        padding: "10px",
+      }}
     >
       <p style={{ margin: 0 }}>
         {entry.date}
