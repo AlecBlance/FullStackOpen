@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import patientsService from "../../services/patients";
-import { Diagnosis, Patient } from "../../types";
+import { Diagnosis, Patient, Entry } from "../../types";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
+import HospitalEntry from "../Entry/HospitalEntry";
+import OccupationalHealthcareEntry from "../Entry/OccupationalHealthcareEntry";
+import HealthCheckEntry from "../Entry/HealthCheckEntry";
 
 const PatientInfo = ({
   id,
@@ -24,6 +27,27 @@ const PatientInfo = ({
 
   if (!id || !patient) return null;
 
+  const assertNever = (value: never): never => {
+    throw new Error(
+      `Unhandled discriminated union member: ${JSON.stringify(value)}`
+    );
+  };
+
+  const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+    switch (entry.type) {
+      case "Hospital":
+        return <HospitalEntry entry={entry} diagnoses={diagnoses} />;
+      case "OccupationalHealthcare":
+        return (
+          <OccupationalHealthcareEntry entry={entry} diagnoses={diagnoses} />
+        );
+      case "HealthCheck":
+        return <HealthCheckEntry entry={entry} diagnoses={diagnoses} />;
+      default:
+        return assertNever(entry);
+    }
+  };
+
   return (
     <div>
       <h1>
@@ -40,20 +64,7 @@ const PatientInfo = ({
       <p>occupation: {patient.occupation}</p>
       <h2>entries</h2>
       {patient.entries.map((entry) => (
-        <div key={entry.id}>
-          <p>
-            {entry.date}
-            <i>{entry.description}</i>
-          </p>
-          <ul>
-            {entry.diagnosisCodes?.map((code) => (
-              <li key={code}>
-                {code}{" "}
-                {diagnoses.find((diagnosis) => diagnosis.code === code)?.name}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <EntryDetails entry={entry} />
       ))}
     </div>
   );
