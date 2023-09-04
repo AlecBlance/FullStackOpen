@@ -8,3 +8,16 @@ Content-Type: application/json
   "gender": "male",
   "occupation": "New york city cop"
 }
+
+###
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+  "description": "good",
+  "date": "2023-1-4",
+  "specialist": "Dr. Alban",
+  "type": "HealthCheck",
+  "healthCheckRating": "1",
+  "diagnosisCodes": "Z57.1, N30.0"
+}

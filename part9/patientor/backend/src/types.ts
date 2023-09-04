@@ -1,4 +1,4 @@
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   description: string;
   date: string;
@@ -36,20 +36,25 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3,
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
 
-interface OccupationalHealthcareEntry extends BaseEntry {
+export interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
   employerName: string;
   sickLeave?: { startDate: string; endDate: string };
 }
 
-interface HospitalEntry extends BaseEntry {
+export interface HospitalEntry extends BaseEntry {
   type: "Hospital";
-  discharge: { date: string; criteria: string };
+  discharge: Discharge;
+}
+
+export interface Discharge {
+  date: string;
+  criteria: string;
 }
 
 export type Entry =
@@ -59,3 +64,8 @@ export type Entry =
 
 export type NewPatient = Omit<Patient, "id">;
 export type NonSensitivePatient = Omit<Patient, "ssn" | "entries">;
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+export type EntryWithoutId = UnionOmit<Entry, "id">;
+export type Types = "HealthCheck" | "OccupationalHealthcare" | "Hospital";
